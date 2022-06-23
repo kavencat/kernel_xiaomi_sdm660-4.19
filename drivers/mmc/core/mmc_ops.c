@@ -958,10 +958,6 @@ void mmc_run_bkops(struct mmc_card *card)
 	    card->ext_csd.raw_bkops_status < EXT_CSD_BKOPS_LEVEL_2)
 		return;
 
-	if (card->ext_csd.raw_bkops_status < EXT_CSD_BKOPS_LEVEL_2 &&
-	    from_exception)
-		return;
-
 	mmc_retune_hold(card->host);
 
 	/*
