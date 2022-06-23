@@ -195,7 +195,7 @@ void tl_release(struct drbd_connection *connection, unsigned int barrier_nr,
 		unsigned int set_size)
 {
 	struct drbd_request *r;
-	struct drbd_request *req = NULL;
+	struct drbd_request *req = NULL, *tmp = NULL;
 	int expect_epoch = 0;
 	int expect_size = 0;
 
@@ -252,8 +252,10 @@ void tl_release(struct drbd_connection *connection, unsigned int barrier_nr,
 		if (req->epoch == expect_epoch)
 			break;
 	list_for_each_entry_safe_from(req, r, &connection->transfer_log, tl_requests) {
-		if (req->epoch != expect_epoch)
+		if (req->epoch == expect_epoch) {
+			tmp = req;
 			break;
+		}
 		_req_mod(req, BARRIER_ACKED);
 	}
 	spin_unlock_irq(&connection->resource->req_lock);
