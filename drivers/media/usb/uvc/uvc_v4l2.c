@@ -867,6 +867,7 @@ static int uvc_ioctl_enum_input(struct file *file, void *fh,
 	struct uvc_entity *iterm = NULL;
 	struct uvc_entity *it;
 	u32 index = input->index;
+	int pin = 0;
 
 	if (selector == NULL ||
 	    (chain->dev->quirks & UVC_QUIRK_IGNORE_SELECTOR_UNIT)) {
