@@ -1274,7 +1274,7 @@ static int dx_make_map(struct inode *dir, struct buffer_head *bh,
 		buflen -= sizeof(struct ext4_dir_entry_tail);
 
 	while ((char *) de < base + buflen) {
-		if (ext4_check_dir_entry(dir, NULL, de, bh, base, buflen,
+		if (ext4_check_dir_entry(dir, NULL, de, bh, base, buflen, lblk,
 					 ((char *)de) - base))
 			return -EFSCORRUPTED;
 		if (de->name_len && de->inode) {
@@ -3606,7 +3606,7 @@ static struct buffer_head *ext4_get_first_dir_block(handle_t *handle,
 		}
 		de = (struct ext4_dir_entry_2 *) bh->b_data;
 		if (ext4_check_dir_entry(inode, NULL, de, bh, bh->b_data,
-					 bh->b_size, 0) ||
+					 bh->b_size, 0, offset) ||
 		    le32_to_cpu(de->inode) != inode->i_ino ||
 		    strcmp(".", de->name)) {
 			EXT4_ERROR_INODE(inode, "directory missing '.'");
