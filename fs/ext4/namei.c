@@ -3618,7 +3618,7 @@ static struct buffer_head *ext4_get_first_dir_block(handle_t *handle,
 						inode->i_sb->s_blocksize);
 		de = ext4_next_entry(de, inode->i_sb->s_blocksize);
 		if (ext4_check_dir_entry(inode, NULL, de, bh, bh->b_data,
-					 bh->b_size, offset) ||
+					 bh->b_size, 0, offset) ||
 		    le32_to_cpu(de->inode) == 0 || strcmp("..", de->name)) {
 			EXT4_ERROR_INODE(inode, "directory missing '..'");
 			brelse(bh);
