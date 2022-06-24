@@ -1274,7 +1274,7 @@ static int dx_make_map(struct inode *dir, struct buffer_head *bh,
 		buflen -= sizeof(struct ext4_dir_entry_tail);
 
 	while ((char *) de < base + buflen) {
-		if (ext4_check_dir_entry(dir, NULL, de, bh, base, buflen, lblk,
+		if (ext4_check_dir_entry(dir, NULL, de, bh, base, buflen, 0,
 					 ((char *)de) - base))
 			return -EFSCORRUPTED;
 		if (de->name_len && de->inode) {
