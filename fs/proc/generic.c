@@ -3,7 +3,7 @@
  *
  * This file contains generic proc-fs routines for handling
  * directories and files.
- * 
+ *
  * Copyright (C) 1991, 1992 Linus Torvalds.
  * Copyright (C) 1997 Theodore Ts'o
  */
@@ -445,6 +445,9 @@ static struct proc_dir_entry *__proc_create(struct proc_dir_entry **parent,
 	proc_set_user(ent, (*parent)->uid, (*parent)->gid);
 
 	ent->proc_dops = &proc_misc_dentry_ops;
+	/* Revalidate everything under /proc/${pid}/net */
+	if ((*parent)->proc_dops == &proc_net_dentry_ops)
+		pde_force_lookup(ent);
 
 out:
 	return ent;
@@ -567,7 +570,7 @@ struct proc_dir_entry *proc_create_data(const char *name, umode_t mode,
 	return proc_register(parent, p);
 }
 EXPORT_SYMBOL(proc_create_data);
- 
+
 struct proc_dir_entry *proc_create(const char *name, umode_t mode,
 				   struct proc_dir_entry *parent,
 				   const struct file_operations *proc_fops)
