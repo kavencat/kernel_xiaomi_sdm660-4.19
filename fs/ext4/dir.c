@@ -262,7 +262,7 @@ static int ext4_readdir(struct file *file, struct dir_context *ctx)
 			de = (struct ext4_dir_entry_2 *) (bh->b_data + offset);
 			if (ext4_check_dir_entry(inode, file, de, bh,
 						 bh->b_data, bh->b_size,
-						 map.m_lblk, 0, offset)) {
+						 map.m_lblk, offset)) {
 				/*
 				 * On error, skip to the next block
 				 */
@@ -666,7 +666,7 @@ int ext4_check_all_de(struct inode *dir, struct buffer_head *bh, void *buf,
 	top = buf + buf_size;
 	while ((char *) de < top) {
 		if (ext4_check_dir_entry(dir, NULL, de, bh,
-					 buf, buf_size, 0, 0, offset))
+					 buf, buf_size, 0, offset))
 			return -EFSCORRUPTED;
 		rlen = ext4_rec_len_from_disk(de->rec_len, buf_size);
 		de = (struct ext4_dir_entry_2 *)((char *)de + rlen);
