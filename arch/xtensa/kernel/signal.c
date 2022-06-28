@@ -45,7 +45,7 @@ struct rt_sigframe
 	unsigned int window[4];
 };
 
-/* 
+/*
  * Flush register windows stored in pt_regs to stack.
  * Returns 1 for errors.
  */
@@ -69,7 +69,7 @@ flush_window_regs_user(struct pt_regs *regs)
 
 	wm = (ws >> wb) | (ws << (XCHAL_NUM_AREGS / 4 - wb));
 	base = (XCHAL_NUM_AREGS / 4) - (regs->wmask >> 4);
-		
+
 	/* For call8 or call12 frames, we need the previous stack pointer. */
 
 	if ((regs->wmask & 2) == 0)
@@ -123,10 +123,10 @@ errout:
 }
 
 /*
- * Note: We don't copy double exception 'regs', we have to finish double exc. 
- * first before we return to signal handler! This dbl.exc.handler might cause 
- * another double exception, but I think we are fine as the situation is the 
- * same as if we had returned to the signal handerl and got an interrupt 
+ * Note: We don't copy double exception 'regs', we have to finish double exc.
+ * first before we return to signal handler! This dbl.exc.handler might cause
+ * another double exception, but I think we are fine as the situation is the
+ * same as if we had returned to the signal handerl and got an interrupt
  * immediately...
  */
 
@@ -378,7 +378,7 @@ static int setup_frame(struct ksignal *ksig, sigset_t *set,
 		ra = (unsigned long) frame->retcode;
 	}
 
-	/* 
+	/*
 	 * Create signal handler execution context.
 	 * Return context not modified until this point.
 	 */
@@ -455,7 +455,7 @@ static void do_signal(struct pt_regs *regs)
 		/* Set up the stack frame */
 		ret = setup_frame(&ksig, sigmask_to_save(), regs);
 		signal_setup_done(ret, &ksig, 0);
-		if (current->ptrace & PT_SINGLESTEP)
+		if (test_thread_flag(TIF_SINGLESTEP))
 			task_pt_regs(current)->icountlevel = 1;
 
 		return;
@@ -481,7 +481,7 @@ static void do_signal(struct pt_regs *regs)
 	/* If there's no signal to deliver, we just restore the saved mask.  */
 	restore_saved_sigmask();
 
-	if (current->ptrace & PT_SINGLESTEP)
+	if (test_thread_flag(TIF_SINGLESTEP))
 		task_pt_regs(current)->icountlevel = 1;
 	return;
 }
