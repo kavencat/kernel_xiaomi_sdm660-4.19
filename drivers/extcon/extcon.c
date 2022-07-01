@@ -1311,6 +1311,7 @@ int extcon_dev_register(struct extcon_dev *edev)
 			ret = -ENOMEM;
 			goto err_alloc_nh;
 		}
+	}
 
 	edev->bnh = devm_kzalloc(&edev->dev,
 			sizeof(*edev->bnh) * edev->max_supported, GFP_KERNEL);
