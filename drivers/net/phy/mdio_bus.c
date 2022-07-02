@@ -743,10 +743,8 @@ int __init mdio_bus_init(void)
 		if (ret)
 			class_unregister(&mdio_bus_class);
 	}
-
 	return ret;
 }
-EXPORT_SYMBOL_GPL(mdio_bus_init);
 
 #if IS_ENABLED(CONFIG_PHYLIB)
 void mdio_bus_exit(void)
