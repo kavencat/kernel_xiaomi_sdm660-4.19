@@ -484,6 +484,7 @@ static int qcom_smp2p_outbound_entry(struct qcom_smp2p *smp2p,
 	out->valid_entries++;
 
 	entry->state = qcom_smem_state_register(node, &smp2p_state_ops, entry);
+	of_node_put(syscon);
 	if (IS_ERR(entry->state)) {
 		dev_err(smp2p->dev, "failed to register qcom_smem_state\n");
 		return PTR_ERR(entry->state);
