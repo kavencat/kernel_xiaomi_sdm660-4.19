@@ -713,10 +713,13 @@ hwmon_device_register_with_info(struct device *dev, const char *name,
 				const struct hwmon_chip_info *chip,
 				const struct attribute_group **extra_groups)
 {
-	if (!dev || !name || !chip)
+	if (!name)
 		return ERR_PTR(-EINVAL);
 
-	if (!chip->ops || !chip->ops->is_visible || !chip->info)
+	if (chip && (!chip->ops || !chip->ops->is_visible || !chip->info))
+		return ERR_PTR(-EINVAL);
+
+	if (chip && !dev)
 		return ERR_PTR(-EINVAL);
 
 	return __hwmon_device_register(dev, name, drvdata, chip, extra_groups);
