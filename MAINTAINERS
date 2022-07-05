@@ -12239,6 +12239,7 @@ F:	drivers/block/rbd_types.h
 
 RAGE128 FRAMEBUFFER DISPLAY DRIVER
 M:	Paul Mackerras <paulus@samba.org>
+M:	Jason A. Donenfeld <Jason@zx2c4.com>
 L:	linux-fbdev@vger.kernel.org
 S:	Maintained
 F:	drivers/video/fbdev/aty/aty128fb.c

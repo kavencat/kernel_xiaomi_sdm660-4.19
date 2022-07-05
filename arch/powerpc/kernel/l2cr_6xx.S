@@ -108,7 +108,7 @@ END_FTR_SECTION_IFCLR(CPU_FTR_L2CR)
 
 	/* Stop DST streams */
 BEGIN_FTR_SECTION
-	DSSALL
+	PPC_DSSALL
 	sync
 END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
 
@@ -250,7 +250,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_SPEC7450)
 	oris	r3,r3,0x8000
 	mtspr	SPRN_L2CR,r3
 	sync
-	
+
 	/* Enable L2 HW prefetch on 744x/745x */
 BEGIN_FTR_SECTION
 	mfspr	r3,SPRN_MSSCR0
@@ -305,7 +305,7 @@ END_FTR_SECTION_IFCLR(CPU_FTR_L3CR)
 	isync
 
 	/* Stop DST streams */
-	DSSALL
+	PPC_DSSALL
 	sync
 
 	/* Get the current enable bit of the L3CR into r4 */
@@ -414,7 +414,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_L3CR)
 _GLOBAL(__flush_disable_L1)
 	/* Stop pending alitvec streams and memory accesses */
 BEGIN_FTR_SECTION
-	DSSALL
+	PPC_DSSALL
 END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
  	sync
 

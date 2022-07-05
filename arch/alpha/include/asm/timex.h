@@ -15,7 +15,7 @@
  * Standard way to access the cycle counter.
  * Currently only used on SMP for scheduling.
  *
- * Only the low 32 bits are available as a continuously counting entity. 
+ * Only the low 32 bits are available as a continuously counting entity.
  * But this only means we'll force a reschedule every 8 seconds or so,
  * which isn't an evil thing.
  */
@@ -28,5 +28,6 @@ static inline cycles_t get_cycles (void)
 	__asm__ __volatile__ ("rpcc %0" : "=r"(ret));
 	return ret;
 }
+#define get_cycles get_cycles
 
 #endif
