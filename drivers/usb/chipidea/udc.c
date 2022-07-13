@@ -920,6 +920,9 @@ isr_setup_status_complete(struct usb_ep *ep, struct usb_request *req)
 	struct ci_hdrc *ci = req->context;
 	unsigned long flags;
 
+	if (req->status < 0)
+		return;
+
 	if (ci->setaddr) {
 		hw_usb_set_address(ci, ci->address);
 		ci->setaddr = false;
@@ -1007,7 +1010,7 @@ static int otg_a_alt_hnp_support(struct ci_hdrc *ci)
  * isr_setup_packet_handler: setup packet handler
  * @ci: UDC descriptor
  *
- * This function handles setup packet 
+ * This function handles setup packet
  */
 static void isr_setup_packet_handler(struct ci_hdrc *ci)
 __releases(ci->lock)
