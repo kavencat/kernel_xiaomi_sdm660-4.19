@@ -513,6 +513,8 @@ long compat_fastrpc_device_ioctl(struct file *filp, unsigned int cmd,
 				unsigned long arg)
 {
 	int err = 0;
+	compat_uint_t sc;
+
 
 	if (!filp->f_op || !filp->f_op->unlocked_ioctl)
 		return -ENOTTY;
@@ -527,7 +529,7 @@ long compat_fastrpc_device_ioctl(struct file *filp, unsigned int cmd,
 		struct fastrpc_ioctl_invoke_crc __user *inv = NULL;
 
 		VERIFY(err, 0 == compat_get_fastrpc_ioctl_invoke(inv32,
-							&inv, cmd));
+							&inv, cmd, sc));
 		if (err)
 			return err;
 		return filp->f_op->unlocked_ioctl(filp,
