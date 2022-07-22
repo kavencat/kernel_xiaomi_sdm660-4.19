@@ -3520,6 +3520,7 @@ static int cgroup_cpu_pressure_show(struct seq_file *seq, void *v)
 static ssize_t cgroup_pressure_write(struct kernfs_open_file *of, char *buf,
 					  size_t nbytes, enum psi_res res)
 {
+	struct cgroup_file_ctx *ctx = of->priv;
 	struct psi_trigger *new;
 	struct cgroup *cgrp;
 
@@ -3531,12 +3532,12 @@ static ssize_t cgroup_pressure_write(struct kernfs_open_file *of, char *buf,
 	cgroup_kn_unlock(of->kn);
 
 	new = psi_trigger_create(&cgrp->psi, buf, nbytes, res);
-	if (IS_ERR(new)) {
+	if (ctx->psi.trigger) {
 		cgroup_put(cgrp);
-		return PTR_ERR(new);
+		return -EBUSY;
 	}
 
-	psi_trigger_replace(&of->priv, new);
+	smp_store_release(&ctx->psi.trigger, new);
 
 	cgroup_put(cgrp);
 
