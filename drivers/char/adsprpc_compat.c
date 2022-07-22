@@ -158,7 +158,7 @@ static int compat_get_fastrpc_ioctl_invoke(
 			struct fastrpc_ioctl_invoke_crc __user **inva,
 			unsigned int cmd, compat_uint_t sc)
 {
-	compat_uint_t u, sc;
+	compat_uint_t u;
 	compat_size_t s;
 	compat_uptr_t p;
 	struct fastrpc_ioctl_invoke_crc *inv;
@@ -526,9 +526,8 @@ long compat_fastrpc_device_ioctl(struct file *filp, unsigned int cmd,
 		struct compat_fastrpc_ioctl_invoke_crc __user *inv32 = NULL;
 		struct fastrpc_ioctl_invoke_crc __user *inv = NULL;
 
-		inv32 = compat_ptr(arg);
 		VERIFY(err, 0 == compat_get_fastrpc_ioctl_invoke(inv32,
-							&inv, cmd));
+							&inv, cmd, sc));
 		if (err)
 			return err;
 		return filp->f_op->unlocked_ioctl(filp,
